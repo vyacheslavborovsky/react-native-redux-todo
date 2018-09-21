@@ -18,7 +18,8 @@ export const TODO_ACTION_TYPES = createTypes(
     'TODO_REQUEST_PENDING',
     'TODO_REQUEST_SUCCESS',
 
-    'REST_TODO_FLAGS'
+    'REST_TODO_FLAGS',
+    'SET_SEARCH_TEXT'
 );
 
 export const TodoActions = {
@@ -39,5 +40,6 @@ export const TodoActions = {
     setTodoRequestPending: createAction(TODO_ACTION_TYPES.TODO_REQUEST_PENDING),
     setTodoRequestSuccess: createAction(TODO_ACTION_TYPES.TODO_REQUEST_SUCCESS),
 
-    resetTodoFlags: createAction(TODO_ACTION_TYPES.REST_TODO_FLAGS)
+    resetTodoFlags: createAction(TODO_ACTION_TYPES.REST_TODO_FLAGS),
+    setSearchText: createAction(TODO_ACTION_TYPES.SET_SEARCH_TEXT)
 }

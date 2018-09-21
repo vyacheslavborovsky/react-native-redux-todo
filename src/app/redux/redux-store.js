@@ -3,7 +3,7 @@ import {applyMiddleware, createStore} from "redux";
 import {enableBatching} from "redux-batched-actions";
 
 import AppReducer from './redux-reducer'
-import AppMiddleware from './redux-middleare'
+import AppMiddleware from './redux-middleware'
 
 export const createReduxStore = function () {
     const sagaMiddleware = createSagaMiddleware();

@@ -19,11 +19,12 @@ export const getTodos = (state, screen) => {
 
 export const getFilteredTodos = state => createSelector(
     [getTodos], (todos) => {
+        const {searchText} = state.todoState;
 
         return {
             todoState: {
                 ...state.todoState,
-                todos: todos.sort((a, b) => a.createdAt - b.createdAt)
+                todos: todos.filter(todo => todo.title.toLowerCase().includes(searchText.toLowerCase())).sort((a, b) => a.createdAt - b.createdAt)
             }
         }
     }

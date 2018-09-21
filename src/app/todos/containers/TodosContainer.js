@@ -4,9 +4,8 @@ import AppHeader from "../components/Header";
 import React, {PureComponent} from 'react'
 import {
     ActivityIndicator, View, KeyboardAvoidingView, Text, Platform, TextInput,
-    TouchableHighlight, StyleSheet, StatusBar, ScrollView, FlatList
+    StyleSheet, StatusBar, ScrollView, FlatList
 } from 'react-native';
-import Modal from 'react-native-modal';
 import TodoItem from "../components/TodoItem";
 import {COLORS} from '../../shared/constants';
 import {Toast} from 'native-base';
@@ -36,8 +35,7 @@ class TodosContainer extends PureComponent {
         this.props.getTodo();
     }
 
-
-    _showToast = ({text, type = 'success', buttonText = 'ok', position = 'bottom', duration = 2000}) => {
+    _showToast = ({text, type = 'success', buttonText = 'ok', position = 'bottom', duration = 1500}) => {
 
         setTimeout(() => {
             Toast.show({
@@ -117,6 +115,10 @@ class TodosContainer extends PureComponent {
         })
     }
 
+    _onChangeSearch = (search) => {
+        this.props.setSearchText(search.trim());
+    }
+
     _updateTodo = () => {
 
         this.props.updateTodo(this.state.editTodo);
@@ -127,7 +129,7 @@ class TodosContainer extends PureComponent {
     }
 
     _renderTodos = () => {
-        const {todos} = this.props.todoState;
+        const {todos, searchText} = this.props.todoState;
 
         if (todos.length > 0) {
             return (
@@ -146,19 +148,23 @@ class TodosContainer extends PureComponent {
             )
         }
 
-        return (<Text style={{width: '100%', fontSize: 16, paddingVertical: 10, color: 'skyblue', textAlign: 'center'}}>
-            No Todos Available</Text>)
-
+        return (
+            <Text style={{width: '100%', fontSize: 16, paddingVertical: 10, color: 'skyblue', textAlign: 'center'}}>
+                No Todos Available {searchText.length > 0 && (
+                <Text> for <Text style={{color: COLORS.tintColor}}>{searchText}</Text></Text>
+            )}
+            </Text>
+        )
     }
 
     render() {
-        const {addingTodo, editModalVisible, loading, hasError, success, errorMessage, successMessage} = this.props.todoState;
+        const {addingTodo, editModalVisible, loading, hasError, success, errorMessage, successMessage, searchText} = this.props.todoState;
         const {newTodo, editTodo} = this.state;
         const isAndroid = Platform.OS === 'android';
 
         return (
             <KeyboardAvoidingView behavior='padding' style={{flex: 1, backgroundColor: '#fff'}}>
-                <AppHeader/>
+                <AppHeader searchText={searchText} onChangeSearch={this._onChangeSearch}/>
 
                 <StatusBar backgroundColor={COLORS.primary} barStyle={isAndroid ? 'light-content' : 'dark-content'}/>
 
@@ -180,9 +186,7 @@ class TodosContainer extends PureComponent {
 
                 </ScrollView>
 
-                {this.props.screen !== TYPES.COMPLETED && (
-                    <AddTodoButton onPress={() => this.props.setAddingTodo(true)}/>)
-                }
+                <AddTodoButton onPress={() => this.props.setAddingTodo(true)}/>
 
                 {editTodo && <EditTodoModal editTodo={editTodo}
 

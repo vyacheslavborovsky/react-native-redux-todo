@@ -10,6 +10,7 @@ export const TodoInitialState = {
     addingTodo: false,
     editModalVisible: false,
 
+    searchText: '',
     loading: false,
     hasError: null,
     success: null,

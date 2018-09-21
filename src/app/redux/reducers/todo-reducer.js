@@ -68,6 +68,11 @@ export const TodoReducer = handleActions({
         editModalVisible: action.payload
     }),
 
+    [TODO_ACTION_TYPES.SET_SEARCH_TEXT]: (state, action) => ({
+        ...state,
+        searchText: action.payload && action.payload.trim().length > 0 ? action.payload : ''
+    }),
+
     [TODO_ACTION_TYPES.REST_TODO_FLAGS]: (state, action) => ({
         ...state,
         hasError: null,

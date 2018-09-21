@@ -3,6 +3,8 @@ import React from 'react';
 import {Ionicons} from '@expo/vector-icons';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {View, CheckBox, Body} from 'native-base';
+import moment from 'moment';
+import {COLORS} from "../../shared/constants/colors";
 
 const TodoItem = ({todo, onUpdate, onLongPress, onDelete}) => (
     <View style={styles.container}>
@@ -11,7 +13,8 @@ const TodoItem = ({todo, onUpdate, onLongPress, onDelete}) => (
             onPress={() => onUpdate({...todo, completed: !todo.completed})}
             onLongPress={() => onLongPress(todo)}>
 
-            <CheckBox checked={todo.completed} onPress={() => onUpdate({...todo, completed: !todo.completed})}/>
+            <CheckBox checked={todo.completed} style={{alignSelf: 'center'}}
+                      onPress={() => onUpdate({...todo, completed: !todo.completed})}/>
 
             <Body style={{
                 flex: 1,
@@ -25,6 +28,14 @@ const TodoItem = ({todo, onUpdate, onLongPress, onDelete}) => (
                 textDecorationLine: todo.completed ? 'line-through' : 'none'
             }}>
                 {todo.title}
+            </Text>
+
+            <Text style={{
+                fontSize: 10,
+                color: COLORS.tintColor,
+                opacity: .5
+            }}>
+                Created {moment(todo.createdAt).fromNow()}
             </Text>
 
             </Body>
@@ -51,6 +62,7 @@ const styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: 'row',
+        alignItems: 'center',
         width: '100%'
     }
 });
