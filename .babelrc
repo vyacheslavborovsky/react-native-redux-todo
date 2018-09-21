@@ -1,0 +1,13 @@
+{
+  "presets": [
+    "es2015",
+    "babel-preset-expo"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "transform-react-jsx-source"
+      ]
+    }
+  }
+}
