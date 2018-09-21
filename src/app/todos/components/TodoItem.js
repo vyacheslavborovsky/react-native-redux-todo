@@ -1,55 +1,108 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {Ionicons} from '@expo/vector-icons';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {View, CheckBox, Body} from 'native-base';
+import {StyleSheet, Text, TouchableOpacity, Animated} from 'react-native';
+import {CheckBox, Body} from 'native-base';
 import moment from 'moment';
 import {COLORS} from "../../shared/constants/colors";
 
-const TodoItem = ({todo, onUpdate, onLongPress, onDelete}) => (
-    <View style={styles.container}>
-        <TouchableOpacity
-            style={styles.row}
-            onPress={() => onUpdate({...todo, completed: !todo.completed})}
-            onLongPress={() => onLongPress(todo)}>
+const duration = 250, height = 60;
 
-            <CheckBox checked={todo.completed} style={{alignSelf: 'center'}}
-                      onPress={() => onUpdate({...todo, completed: !todo.completed})}/>
+class TodoItem extends PureComponent {
 
-            <Body style={{
-                flex: 1,
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                paddingLeft: 25
-            }}>
+    constructor(props) {
+        super(props);
 
-            <Text style={{
-                color: todo.completed ? 'grey' : 'black',
-                textDecorationLine: todo.completed ? 'line-through' : 'none'
-            }}>
-                {todo.title}
-            </Text>
+        this._animated = new Animated.Value(0);
+    }
 
-            <Text style={{
-                fontSize: 10,
-                color: COLORS.tintColor,
-                opacity: .5
-            }}>
-                Created {moment(todo.createdAt).fromNow()}
-            </Text>
+    componentDidMount() {
+        Animated.timing(this._animated, {
+            toValue: 1,
+            duration: duration,
+        }).start();
+    }
 
-            </Body>
-        </TouchableOpacity>
+    _onRemove = () => {
+        const {onDelete, todo} = this.props;
 
-        <TouchableOpacity style={{paddingHorizontal: 20}}
-                          onPress={() => onDelete(todo)}>
-            <Ionicons name='ios-trash-outline' color={`${todo.title.length > 0 ? 'black' : 'grey'}`} size={23}/>
-        </TouchableOpacity>
-    </View>
-)
+        Animated.timing(this._animated, {
+            toValue: 0,
+            duration: duration,
+        }).start(() => onDelete(todo));
+    }
+
+    render() {
+        const {onUpdate, onLongPress, todo} = this.props;
+
+        return (
+            <Animated.View style={[
+                styles.container,
+                {
+                    height: this._animated.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, height],
+                        extrapolate: 'clamp',
+                    }),
+                },
+                {opacity: this._animated},
+                {
+                    transform: [
+                        {scale: this._animated},
+                        {
+                            rotate: this._animated.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: ['35deg', '0deg'],
+                                extrapolate: 'clamp',
+                            })
+                        }
+                    ],
+                }
+            ]}>
+
+                <TouchableOpacity
+                    style={styles.row}
+                    onPress={() => onUpdate({...todo, completed: !todo.completed})}
+                    onLongPress={() => onLongPress(todo)}>
+
+                    <CheckBox checked={todo.completed} style={{alignSelf: 'center'}}
+                              onPress={() => onUpdate({...todo, completed: !todo.completed})}/>
+
+                    <Body style={{
+                        flex: 1,
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        paddingLeft: 25
+                    }}>
+
+                    <Text style={{
+                        color: todo.completed ? 'grey' : 'black',
+                        textDecorationLine: todo.completed ? 'line-through' : 'none'
+                    }}>
+                        {todo.title}
+                    </Text>
+
+                    <Text style={{
+                        fontSize: 10,
+                        color: COLORS.tintColor,
+                        opacity: .5
+                    }}>
+                        Created {moment(todo.createdAt).fromNow()}
+                    </Text>
+
+                    </Body>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{paddingHorizontal: 20}}
+                                  onPress={this._onRemove}>
+                    <Ionicons name='ios-trash-outline' color={`${todo.title.length > 0 ? 'black' : 'grey'}`} size={23}/>
+                </TouchableOpacity>
+            </Animated.View>
+        )
+    }
+}
 
 const styles = StyleSheet.create({
-
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -73,6 +126,7 @@ const propTypes = {
         completed: PropTypes.bool,
         createdAt: PropTypes.number,
     }).isRequired,
+    index: PropTypes.number.isRequired,
     onUpdate: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
 };

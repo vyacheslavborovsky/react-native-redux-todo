@@ -137,9 +137,9 @@ class TodosContainer extends PureComponent {
                     style={{flex: 1}}
                     data={todos}
                     keyExtractor={item => item.id}
-                    renderItem={({item: todo}) => (
+                    renderItem={({item: todo, index}) => (
                         <TodoItem todo={todo}
-
+                                  index={index}
                                   onUpdate={this._onUpdate}
                                   onLongPress={this._onItemLongPress}
                                   onDelete={this._onDelete}/>

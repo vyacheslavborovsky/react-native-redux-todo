@@ -14,7 +14,6 @@ export const getTodos = (state, screen) => {
         default:
             return todos
     }
-
 }
 
 export const getFilteredTodos = state => createSelector(
@@ -24,7 +23,7 @@ export const getFilteredTodos = state => createSelector(
         return {
             todoState: {
                 ...state.todoState,
-                todos: todos.filter(todo => todo.title.toLowerCase().includes(searchText.toLowerCase())).sort((a, b) => a.createdAt - b.createdAt)
+                todos: todos.filter(todo => todo.title.toLowerCase().includes(searchText.toLowerCase())).sort((a, b) => b.createdAt - a.createdAt)
             }
         }
     }
