@@ -1,3 +1,7 @@
+if (typeof global.self === 'undefined') {
+    global.self = global;
+}
+
 import React from 'react';
 import RootComponent from "./src/app/RootComponent";
 import {createReduxStore} from './src/app/redux/redux-store'

@@ -43,7 +43,7 @@ class TodoItem extends PureComponent {
                         inputRange: [0, 1],
                         outputRange: [0, height],
                         extrapolate: 'clamp',
-                    }),
+                    })
                 },
                 {opacity: this._animated},
                 {
@@ -55,8 +55,9 @@ class TodoItem extends PureComponent {
                                 outputRange: ['35deg', '0deg'],
                                 extrapolate: 'clamp',
                             })
-                        }
-                    ],
+                        },
+                        {perspective: 1000}
+                    ]
                 }
             ]}>
 
