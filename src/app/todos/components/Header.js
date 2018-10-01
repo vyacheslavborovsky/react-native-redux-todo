@@ -42,8 +42,9 @@ const AppHeader = ({onChangeSearch, searchText}) => (
             autoCapitalize='none'
         />
 
+        {searchText.length > 0 &&
         <Icon style={[styles.white, {alignSelf: 'flex-end', fontSize: 26}]} onPress={() => onChangeSearch('')}
-              name='ios-close'/>
+              name='ios-close'/>}
         </Body>
     </Header>
 );

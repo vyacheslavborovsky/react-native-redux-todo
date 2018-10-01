@@ -1,4 +1,4 @@
-import state from '../redux-state'
+import state from '../state'
 import {handleActions} from "redux-actions";
 import combineActions from "redux-actions/es/combineActions";
 

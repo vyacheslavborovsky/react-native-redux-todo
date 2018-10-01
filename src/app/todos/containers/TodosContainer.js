@@ -12,9 +12,8 @@ import {Toast} from 'native-base';
 import {connect} from "react-redux";
 import {getFilteredTodos} from "../../shared/utils/todos-utils";
 import {TodoActions} from '../../redux/actions';
-import {TodoDefault} from "../../redux/constants/todo-constants";
+import {TodoDefault} from "../../redux/state/todo-state";
 import {bindActionCreators} from "redux";
-import {TYPES} from "../../shared/constants/index";
 import EditTodoModal from "../components/EditTodoModal";
 
 class TodosContainer extends PureComponent {
